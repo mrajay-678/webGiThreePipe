@@ -1,1 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Website with WebGi & Three.js</title>
+    <!-- Import maps polyfill, Remove this when import maps will be widely supported -->
+    <script async src="https://unpkg.com/es-module-shims@1.6.3/dist/es-module-shims.js"></script>
+    <script type="importmap">
+        {
+        "imports": {
+            "threepipe": "https://unpkg.com/threepipe@latest/dist/index.mjs",
+            "@threepipe/webgi-plugins": "https://unpkg.com/@threepipe/webgi-plugins@latest/dist/index.mjs"
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <canvas id="webgi-canvas" style="width: 100%; height: 100%;"></canvas>
+</body>
+
+<script type="module" src="./script.js"></script>
+
+</html>
