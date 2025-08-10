@@ -19,37 +19,7 @@ async function init() {
   if (typeof viewer.scene.findObjectsByName === 'function') {
     matches = viewer.scene.findObjectsByName("mesh_1");
   }
-  if (!matches || matches.length === 0) {
-    // Fallback: traverse the scene and log all mesh names
-    viewer.scene.traverse(obj => {
-      if (obj.isMesh && obj.name && obj.name === 'Brillant_1') {
-        matches.push(obj);
-      }
-    });
-    // Log all mesh names for debugging
-    console.log('All mesh names in scene:');
-    viewer.scene.traverse(obj => {
-      if (obj.isMesh && obj.name) console.log(obj.name);
-    });
-  }
-  if (matches.length > 0) {
-    ringMesh = matches[0];
-    console.log("Ring Mesh Found:", ringMesh);
-  } else {
-    console.warn("No object named 'Ring' found in scene.glb");
-  }
-
-  const taa = viewer.getPlugin(TemporalAAPlugin);
-  taa.enabled = true;
-  if (taa.feedBack && typeof taa.feedBack.set === 'function') {
-    taa.feedBack.set(0.88, 0.97);
-  } else if (taa.feedback && typeof taa.feedback.set === 'function') {
-    taa.feedback.set(0.88, 0.97);
-  } else {
-    // fallback: try to set properties directly if available
-    if (taa.feedBack0 !== undefined) taa.feedBack0 = 0.88;
-    if (taa.feedBack1 !== undefined) taa.feedBack1 = 0.97;
-  }
+  ringMesh = matches[0];
 }
 
 function changeMetal(colorHex) {
