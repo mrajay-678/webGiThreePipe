@@ -16,23 +16,85 @@
         }
     </script>
     <style>
-        body, html {
+        body,
+        html {
             margin: 0;
             padding: 0;
             width: 100%;
             height: 100%;
-            overflow: hidden;
         }
+
         canvas {
             display: block;
+        }
+
+        .material-buttons {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 10px;
+        }
+
+        .material-buttons button {
+            padding: 8px 14px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            background: white;
         }
     </style>
 </head>
 
 <body>
     <canvas id="webgi-canvas" style="width: 100%; height: 100%;"></canvas>
+    <div class="material-buttons">
+        <button id="gold-btn">Gold</button>
+        <button id="silver-btn">Silver</button>
+        <button id="rose-btn">Rose Gold</button>
+    </div>
 </body>
 
 <script type="module" src="./script.js"></script>
+
+<script type="module">
+    import { ThreeViewer } from 'threepipe';
+
+    // Wait for the main script to initialize the viewer
+    window.addEventListener('DOMContentLoaded', async () => {
+        // Wait a bit to ensure viewer is initialized
+        await new Promise(r => setTimeout(r, 500));
+        // Try to get the viewer from the global scope if exported
+        let viewer = window.viewer;
+        if (!viewer && window.__threepipe_viewer) viewer = window.__threepipe_viewer;
+        if (!viewer) {
+            // Try to get from the main script if it attaches to window
+            const mod = await import('./script.js');
+            viewer = mod.viewer || window.viewer || window.__threepipe_viewer;
+        }
+        if (!viewer) return;
+
+        // Helper to get the main mesh/material
+        function getMainMaterial() {
+            // Try to get the first mesh in the scene
+            const scene = viewer.scene;
+            let mesh = null;
+            scene.traverse(obj => {
+                if (!mesh && obj.isMesh && obj.material) mesh = obj;
+            });
+            return mesh ? mesh.material : null;
+        }
+
+        document.getElementById('redBtn').onclick = () => {
+            const mat = getMainMaterial();
+            if (mat) mat.color.set('red');
+        };
+        document.getElementById('goldBtn').onclick = () => {
+            const mat = getMainMaterial();
+            if (mat) mat.color.set('gold');
+        };
+    });
+</script>
 
 </html>
